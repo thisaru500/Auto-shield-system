@@ -1,13 +1,24 @@
 #include <SoftwareSerial.h>
+#include<Servo.h>
+Servo yakada; 
 SoftwareSerial sim900(7, 8);  // RX, TX
 
 void setup() {
+   int servo = 9;
+  yakada.attach(servo);
   Serial.begin(9600);  
   sim900.begin(9600);  
-  delay(1000);         
+  delay(1000);
+
+   int smoke_sensor =A0;
+   int safety_lim = 60;
+   int ledset = 9;
+   int relay = 10;
+   
+  
 }
 
-void Sendmessage() {
+void Sim900a() {
   sim900.println("AT");  
   delay(1000);
  
@@ -30,6 +41,8 @@ void Sendmessage() {
 }
 
 void loop() {
-  Sendmessage();  
-  delay(10000);  
+   
+  
+
+  
 }
