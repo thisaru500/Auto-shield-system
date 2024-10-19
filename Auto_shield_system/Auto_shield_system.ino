@@ -56,21 +56,33 @@ void servo1() {
     yakada.write(pos);             
     delay(20);                    
   }
+}
 
 void loop() {
    
  int sensor_read =  analogRead(smoke_sensor);
+ Serial.print(sensor_read);
  int flame_value = digitalRead(flame);
+ Serial.print(flame_value);
 
  if(sensor_read >= safety_lim || flame_value == 1)
  { 
-   sim900a();
+   Sim900a();
    servo1();
    digitalWrite(relay , HIGH);//for turn off main switch
    for(int i = 50; i>0 ; i--){
 
     digitalWrite(buzzer , HIGH);
     delay(1000);
+    digitalWrite(ledset , HIGH);
+   
+ }
+ }
+ 
+
+   else {
+       Serial.print("No issue continue your work");
+    }
    }
    
 
@@ -79,4 +91,3 @@ void loop() {
  
 
   
-}
