@@ -1,5 +1,9 @@
 #include <SoftwareSerial.h>
 #include<Servo.h>
+#include <Wire.h>
+#include <Adafruit_AMG88xx.h>
+
+Adafruit_AMG88xx amg;
 Servo yakada; 
 SoftwareSerial sim900(7, 8);  // RX, TX
 
@@ -11,12 +15,15 @@ SoftwareSerial sim900(7, 8);  // RX, TX
    int flame = 11;
    int pos = 0;
    int buzzer = 3;
+   float pixels[64];
+   float temp_limit = 50.0;
    
 void setup() {
    
   yakada.attach(servo);
   Serial.begin(9600);  
-  sim900.begin(9600);  
+  sim900.begin(9600);
+  amg.begin();  
   delay(1000);
 
   pinMode(smoke_sensor , INPUT);
@@ -65,7 +72,16 @@ void loop() {
  int flame_value = digitalRead(flame);
  Serial.print(flame_value);
 
- if(sensor_read >= safety_lim || flame_value == 1)
+  amg.readPixels(pixels);
+  bool over_temp = false;
+  for (int i = 0; i < 64; i++) {
+    if (pixels[i] > temp_limit) {
+      over_temp = true;
+      break;
+    }
+  }
+
+ if (sensor_read >= safety_lim || flame_value == 1 || over_temp) 
  { 
    Sim900a();
    servo1();
