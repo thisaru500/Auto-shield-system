@@ -24,7 +24,7 @@ void setup() {
   Serial.begin(9600);  
   sim900.begin(9600);
   amg.begin();  
-  delay(1000);
+  delay(500);
 
   pinMode(smoke_sensor , INPUT);
   pinMode(ledset , OUTPUT);
